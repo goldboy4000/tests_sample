@@ -1,5 +1,6 @@
 var expect = chai.expect;
 var should = chai.should;
+var assert = chai.assert;
 
 describe('Radio', function () {
 
@@ -37,6 +38,19 @@ describe('Radio', function () {
            radio.on(test_topic, callback2);
            expect(radio.topics).to.deep.include({test_topic: [callback, callback2]});
        });
-
    });
+
+    describe('method:once', function () {
+        it('should called once', function () {
+            var radioOfSpy = sinon.spy(radio, 'off');
+
+
+            var test_topic = 'test_topic';
+            var callback = function () {};
+            radio.once(test_topic, callback);
+            radio.trigger(test_topic);
+
+            sinon.assert.calledOnce(radioOfSpy);
+        });
+    });
 });
